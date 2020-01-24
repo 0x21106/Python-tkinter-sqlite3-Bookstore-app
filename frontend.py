@@ -1,6 +1,8 @@
 from tkinter import *
 import tkinter
-import backend
+from backend import Database
+
+database = Database("books.db")
 
 MainWindow = Tk()
 back = tkinter.Frame(master=MainWindow, width=500, height=400, bg='white')
@@ -12,16 +14,16 @@ def clear_text_area():
 
 def view_all_command():
     clear_text_area()
-    for item in backend.view():
+    for item in database.view():
         content_listbox.insert(END, item)
 
 def search_command():
     clear_text_area()
-    for item in backend.search(title=title_text.get(), author=author_text.get(), year=year_text.get(), isbn=isbn_text.get()):
+    for item in database.search(title=title_text.get(), author=author_text.get(), year=year_text.get(), isbn=isbn_text.get()):
         content_listbox.insert(END, item)
         
 def insert_entry_command():
-    backend.insert(title = title_text.get(), author = author_text.get(), year = year_text.get(), isbn = isbn_text.get())
+    database.insert(title = title_text.get(), author = author_text.get(), year = year_text.get(), isbn = isbn_text.get())
     view_all_command()
     
 def get_selected_row(event):
@@ -48,13 +50,13 @@ def get_selected_row(event):
 def delete_entry_command():
     if "selected_tuple" in globals():
         clear_text_area()
-        backend.delete(selected_tuple[0])
+        database.delete(selected_tuple[0])
         view_all_command()
 
 def update_entry_command():
     if "selected_tuple" in globals():
         clear_text_area()
-        backend.update(selected_tuple[0], title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
+        database.update(selected_tuple[0], title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
         view_all_command()
 
 def quit_command():
